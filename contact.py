@@ -3,23 +3,24 @@ class ContactBook:
         self.contacts = []  # List of (name, phone) tuples
 
     def add_contact(self, name, phone):
-        # Adds a contact to the book
         self.contacts.append((name, phone))
         print(f"Contact {name} added")
 
     def view_contacts(self):
-        # BUG 1: Should display all contacts, but accidentally clears list before
-        self.contacts.clear()
-        for idx, (name, phone) in enumerate(self.contacts):
-            print(f"{idx}: {name} - {phone}")
+        if not self.contacts:
+            print("No contacts to display.")
+        else:
+            for idx, (name, phone) in enumerate(self.contacts):
+                print(f"{idx}: {name} - {phone}")
 
     def search_contact(self, name):
-        # BUG 2: '==' instead of 'in', misses partial matches
+        found = False
         for idx, (contact_name, phone) in enumerate(self.contacts):
-            if contact_name == name:
+            if name.lower() in contact_name.lower():
                 print(f"Found: {contact_name} - {phone}")
-                return
-        print("Contact not found")
+                found = True
+        if not found:
+            print("Contact not found")
 
     def delete_contact(self, idx):
         # BUG 3: No bounds checking, will crash with invalid index
